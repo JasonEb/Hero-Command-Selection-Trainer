@@ -27,20 +27,18 @@ export const weightedSample = (map) => {
     let rng = Math.floor(Math.random() * totalWeight) + 1 
 
     // Iterate over the items
-    Object.keys(map).forEach( spell => {
+    for (const spell in map) {
         // For the current item, subtract the item’s weight from the random number that was originally picked
-        totalWeight -= map[spell];
 
         // Compare the result to zero. If less than or equal to zero then break otherwise keep iterating.
-        // The key is that the larger the weight the more likely to be less than zero 
-        // when compared to the random selection between zero and the sum of weights.
-        debugger
-    })
+        if (rng <= map[spell]){
+            return spell
+        }
+        rng -= map[spell];
+    }
 
-
-    
-    // If not less than zero, continue iterating over the list, all the while subtracting more and more weights off the random number chosen from the sum of the weights.
-    return ["yay"]
+    debugger
+    return "No spell how did this happen"
 }
 
 export default SpellsMap;

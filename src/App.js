@@ -9,7 +9,7 @@ function App() {
   return (
     <div className="App">
       <pre>
-        {JSON.stringify(SpellsMap)}
+        {JSON.stringify(spells)}
       </pre>
     </div>
   );
