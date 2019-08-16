@@ -19,17 +19,19 @@
     "Zoom": { weight: 3.76923, active: true }
 }
 
-export const weightedSample = (eligibleSpellsMap) => {
+export const weightedSample = (spellsMap, prevSpells = []) => {
     let chosenSpells = []
     let totalWeight = 0
+    let eligibleSpells = []
     // Pick a number at random between 1 and the sum of the weights
     // Iterate over the items and find rng less than current weight
-    while( chosenSpells.length <= 3 ) {
-        totalWeight = Object.values(eligibleSpellsMap).reduce((prev, curr) => prev + curr.weight, 0)
-        let rng = Math.floor(Math.random() * totalWeight) + 1 
 
-        for (const spellName in eligibleSpellsMap) {
-            let spell = eligibleSpellsMap[spellName]
+    while( chosenSpells.length <= 3 ) {
+        eligibleSpells = Object.entries(spellsMap).filter( (el) => el[1].active)
+        totalWeight = eligibleSpells.reduce((prev, curr) => prev + curr[1].weight, 0)
+        let rng = Math.floor(Math.random() * totalWeight) + 1 
+        for (const spellName in spellsMap) {
+            let spell = spellsMap[spellName]
             if (rng <= spell.weight && spell.active) {
                 chosenSpells.push(spellName)
                 spell.active = false;
@@ -38,7 +40,12 @@ export const weightedSample = (eligibleSpellsMap) => {
             rng -= spell.weight;
         }
     }
-
+    console.log(spellsMap);
+    
+    //re-enable previous spells
+    prevSpells.forEach( spellName => {
+        spellsMap[spellName].active = true
+    })
     return chosenSpells;
 }
 
